@@ -12,8 +12,8 @@ const Home: React.FC<HomeProps> = ({ timings, prayerState, theme }) => {
   if (!timings) {
     return (
       <div className="flex flex-col items-center justify-center py-24 space-y-6">
-        <div className={`w-16 h-16 border-8 rounded-full animate-spin border-t-transparent ${theme.accent.replace('text', 'border')}`}></div>
-        <p className="text-slate-400 font-bold animate-pulse text-lg">جاري تحميل أوقات الصلاة...</p>
+        <div className={`w-14 h-14 border-4 rounded-full animate-spin border-t-transparent ${theme.accent.replace('text', 'border')}`}></div>
+        <p className="text-slate-400 font-bold animate-pulse text-sm">جاري تحديث المواقيت...</p>
       </div>
     );
   }
@@ -28,8 +28,8 @@ const Home: React.FC<HomeProps> = ({ timings, prayerState, theme }) => {
   ];
 
   return (
-    <div className="pt-16 pb-10">
-      <div className="grid grid-cols-1 gap-5">
+    <div className="pb-10 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="grid grid-cols-1 gap-4">
         {prayersToDisplay.map((p) => (
           <PrayerCard 
             key={p.key}

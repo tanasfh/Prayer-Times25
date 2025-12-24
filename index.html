@@ -9,20 +9,39 @@
     <style>
       body {
         font-family: 'Tajawal', sans-serif;
-        background-color: #f1f5f9;
+        background-color: #f8fafc;
         margin: 0;
         padding: 0;
         overflow-x: hidden;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
       }
       .quran-font {
         font-family: 'Amiri', serif;
       }
       .islamic-pattern {
-        background-color: transparent;
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M0 0h80v80H0V0zm40 40l20-20-20-20-20 20 20 20zm0 0l20 20-20 20-20-20 20-20z'/%3E%3C/g%3E%3C/svg%3E");
       }
-      .compass-transition {
-        transition: transform 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+      .glass-card {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+      .bottom-nav-shadow {
+        box-shadow: 0 -4px 20px -5px rgba(0, 0, 0, 0.1);
+      }
+      @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+      }
+      .float-animation {
+        animation: float 4s ease-in-out infinite;
+      }
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 0px;
       }
     </style>
   <script type="importmap">
