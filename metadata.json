@@ -1,0 +1,7 @@
+{
+  "name": "Prayer Times",
+  "description": "A beautiful prayer times application for Saudi Arabia with a focus mode during prayer times.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
