@@ -1,51 +1,47 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { HashRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { Settings as SettingsIcon, MapPin, Calendar, Clock, ChevronLeft } from 'lucide-react';
+import { HashRouter, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
+import { Settings as SettingsIcon, MapPin, Calendar, Clock, Home as HomeIcon } from 'lucide-react';
 import { AppSettings, PrayerTimes, PrayerState, PrayerName, HijriDate } from './types';
 import { DEFAULT_SETTINGS, SAUDI_CITIES, PREDEFINED_THEMES, PRAYER_NAMES_AR } from './constants';
 import { fetchPrayerTimes, parsePrayerDate } from './services/prayerService';
 import Home from './pages/Home';
 import SettingsPage from './pages/Settings';
-import QiblaPage from './pages/Qibla';
-import BottomNav from './components/BottomNav';
 
 const HeaderContent: React.FC<{ settings: AppSettings; hijriDate: HijriDate | null; activeTheme: any; prayerState: PrayerState }> = ({ settings, hijriDate, activeTheme, prayerState }) => {
   const location = useLocation();
   const isHome = location.pathname === '/';
-  const isQibla = location.pathname === '/qibla';
   const isSettings = location.pathname === '/settings';
-
-  const getTitle = () => {
-    if (isQibla) return 'القبلة';
-    if (isSettings) return 'الإعدادات';
-    return '';
-  };
 
   return (
     <header className={`p-8 pt-12 text-white rounded-b-[3.5rem] shadow-2xl transition-all duration-700 relative overflow-hidden islamic-pattern ${activeTheme.bgHeader} mb-6`}>
       <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-20 -mt-20 blur-3xl"></div>
       <div className="absolute bottom-0 left-0 w-48 h-48 bg-black/10 rounded-full -ml-10 -mb-10 blur-2xl"></div>
 
-      <div className="relative flex justify-between items-center mb-6">
+      <div className="relative flex justify-between items-start mb-6">
         <div className="flex flex-col">
           <div className="flex items-center text-white/80 text-xs gap-1.5 font-bold mb-1">
             <MapPin size={14} className="text-white/60" />
             <span>{settings.selectedCity.arabicName}</span>
           </div>
-          {hijriDate && isHome && (
+          {hijriDate && (
             <div className="flex items-center text-white/90 text-[10px] gap-1.5 font-bold">
               <Calendar size={12} className="text-white/40" />
               <span>{hijriDate.day} {hijriDate.month.ar} {hijriDate.year} هـ</span>
             </div>
           )}
-          {!isHome && <h1 className="text-2xl font-black">{getTitle()}</h1>}
         </div>
         
-        {isHome && (
-          <div className="bg-white/10 px-3 py-1.5 rounded-2xl backdrop-blur-md border border-white/10 text-[10px] font-black">
-            {hijriDate?.weekday.ar}
-          </div>
-        )}
+        <div className="flex gap-2">
+          {isHome ? (
+            <Link to="/settings" className="bg-white/10 p-2.5 rounded-2xl backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all">
+              <SettingsIcon size={20} />
+            </Link>
+          ) : (
+            <Link to="/" className="bg-white/10 p-2.5 rounded-2xl backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all">
+              <HomeIcon size={20} />
+            </Link>
+          )}
+        </div>
       </div>
 
       {isHome && prayerState.nextPrayerName && (
@@ -61,6 +57,12 @@ const HeaderContent: React.FC<{ settings: AppSettings; hijriDate: HijriDate | nu
               {PRAYER_NAMES_AR[prayerState.nextPrayerName]}
             </h2>
           </div>
+        </div>
+      )}
+      
+      {!isHome && (
+        <div className="mt-4">
+          <h1 className="text-3xl font-black">الإعدادات</h1>
         </div>
       )}
     </header>
@@ -202,18 +204,15 @@ const App: React.FC = () => {
 
   return (
     <HashRouter>
-      <div className="min-h-screen bg-slate-50 text-slate-900 pb-24 max-w-lg mx-auto shadow-2xl flex flex-col relative overflow-hidden text-right">
+      <div className="min-h-screen bg-slate-50 text-slate-900 max-w-lg mx-auto shadow-2xl flex flex-col relative overflow-hidden text-right">
         <HeaderContent settings={settings} hijriDate={hijriDate} activeTheme={activeTheme} prayerState={prayerState} />
 
-        <main className="flex-1 overflow-y-auto px-6 relative z-10">
+        <main className="flex-1 overflow-y-auto px-6 relative z-10 pb-10">
           <Routes>
             <Route path="/" element={<Home timings={timings} prayerState={prayerState} theme={activeTheme} />} />
-            <Route path="/qibla" element={<QiblaPage city={settings.selectedCity} theme={activeTheme} />} />
             <Route path="/settings" element={<SettingsPage settings={settings} setSettings={setSettings} />} />
           </Routes>
         </main>
-
-        <BottomNav theme={activeTheme} />
       </div>
     </HashRouter>
   );
